@@ -6,6 +6,7 @@ import ProductCard from "../../../components/user/ProductCard/ProductCard";
 import OrderSidebar from "../../../components/user/OrderSidebar/OrderSidebar";
 import "./Beli.css";
 
+// Penjelasan: Komponen utama halaman pembelian untuk pengguna.
 export default function Beli() {
   const products = [
     {
@@ -38,6 +39,7 @@ export default function Beli() {
     },
   ];
 
+  // Penjelasan: Menampilkan daftar produk dan sidebar pesanan pada halaman pembelian.
   return (
     <div className="beli-layout">
       <main className="beli-main">

@@ -7,25 +7,33 @@ import { FaSpinner } from "react-icons/fa";
 import "./Login.css";
 
 const Login = () => {
+  // Penjelasan: State ini menyimpan input email atau username yang diketik pengguna.
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  // Penjelasan: State ini menyimpan status password yang ditampilkan atau disembunyikan.
   const [showPassword, setShowPassword] = useState(false);
+  // Penjelasan: State ini mengatur pilihan remember me pada form login.
   const [remember, setRemember] = useState(true);
+  // Penjelasan: State ini mengontrol tampilan loading saat proses login berjalan.
   const [loading, setLoading] = useState(false);
+  // Penjelasan: State ini menyimpan pesan error atau sukses yang akan ditampilkan.
   const [message, setMessage] = useState(null); // { type: 'error'|'success', text }
 
+  // Penjelasan: Mengambil fungsi login dan data user dari context autentikasi.
   const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  // Penjelasan: Menjalankan proses saat komponen dirender atau ketika data user berubah.
   useEffect(() => {
     if (user) {
       // If already logged in, redirect based on role
       if (user.role === "admin") navigate("/admin");
-      else navigate("/");
+      else navigate("/beli");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  // Penjelasan: Fungsi ini bertugas memproses login saat form dikirim.
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(null);
@@ -34,6 +42,7 @@ const Login = () => {
     // simulate request latency for UX
     await new Promise((r) => setTimeout(r, 700));
 
+    // Penjelasan: Memeriksa data dummy untuk validasi login sebelum masuk ke aplikasi.
     const foundUser = dummyUsers.find(
       (u) => (u.username === identifier || u.username === identifier) && u.password === password
     );
@@ -43,7 +52,7 @@ const Login = () => {
       setMessage({ type: "success", text: `Selamat datang, ${foundUser.username}!` });
       setTimeout(() => {
         if (foundUser.role === "admin") navigate("/admin");
-        else navigate("/");
+        else navigate("/beli");
       }, 600);
     } else {
       setMessage({ type: "error", text: "Username atau password salah." });
@@ -52,6 +61,7 @@ const Login = () => {
     setLoading(false);
   };
 
+  // Penjelasan: Menampilkan struktur halaman login yang modern dan responsif.
   return (
     <div className="login-page">
       <div className="login-container">
@@ -98,6 +108,7 @@ const Login = () => {
             )}
 
             <form onSubmit={handleSubmit} className="login-form" aria-label="login form">
+              {/* Penjelasan: Input ini menerima username atau email pengguna untuk proses login. */}
               <label htmlFor="identifier" className="sr-only">Email atau Username</label>
               <div className="input-group">
                 <span className="icon"><FiMail /></span>
@@ -113,6 +124,7 @@ const Login = () => {
                 />
               </div>
 
+              {/* Penjelasan: Input ini menerima password pengguna untuk divalidasi. */}
               <label htmlFor="password" className="sr-only">Password</label>
               <div className="input-group">
                 <span className="icon"><FiLock /></span>
@@ -149,6 +161,7 @@ const Login = () => {
                 <a href="#" className="forgot">Forgot password?</a>
               </div>
 
+              {/* Penjelasan: Tombol ini mengirim form login dan menampilkan loading saat proses berjalan. */}
               <button className="btn-login" type="submit" disabled={loading}>
                 {loading ? <FaSpinner className="spinner" /> : null}
                 <span className="btn-text">{loading ? "Logging in..." : "Login"}</span>

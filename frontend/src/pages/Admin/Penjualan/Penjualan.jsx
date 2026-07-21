@@ -6,7 +6,9 @@ import CategoryFilter from "../../../components/Admin/CategoryFilter/CategoryFil
 import ProductGrid from "../../../components/Admin/ProductGrid/ProductGrid";
 import OrderList from "../../../components/Admin/OrderList/OrderList";
 
+// Penjelasan: Komponen utama halaman admin yang menampilkan area penjualan.
 function Penjualan() {
+  // Penjelasan: Menampilkan struktur halaman penjualan untuk admin.
   return (
     <div className="container">
       <Sidebar />
