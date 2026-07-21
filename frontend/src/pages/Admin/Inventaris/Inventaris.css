@@ -1,0 +1,45 @@
+.inventory-container{
+    display:flex;
+    min-height:100vh;
+}
+
+.inventory-content{
+    flex:1;
+    padding:30px;
+    background:#f5f5f5;
+}
+
+.inventory-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.inventory-header h1{
+    color:#4D341E;
+    font-size:40px;
+}
+
+.add-btn{
+    background:#5A3D23;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    font-size:15px;
+    cursor:pointer;
+}
+
+.add-btn:hover{
+    background:#452d1b;
+}
+
+.search-menu{
+    width:100%;
+    padding:12px;
+    margin:20px 0;
+    border:1px solid #ddd;
+    border-radius:8px;
+    font-size:15px;
+}

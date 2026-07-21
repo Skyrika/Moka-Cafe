@@ -1,4 +1,5 @@
 import "./Sidebar.css";
+import { NavLink } from "react-router-dom";
 import {
   FaCashRegister,
   FaClipboardList,
@@ -10,45 +11,44 @@ import {
 function Sidebar() {
   return (
     <div className="sidebar">
-
       <div>
-
         <div className="logo">
           <h1>Moka Cafe</h1>
           <p>Shift: Pagi</p>
         </div>
 
         <ul className="menu">
-
-          <li className="active">
-            <FaCashRegister />
-            <span>Penjualan</span>
+          <li>
+            <NavLink to="/">
+              <FaCashRegister />
+              <span>Penjualan</span>
+            </NavLink>
           </li>
 
           <li>
-            <FaClipboardList />
-            <span>Pesanan</span>
+            <NavLink to="/pesanan">
+              <FaClipboardList />
+              <span>Pesanan</span>
+            </NavLink>
           </li>
 
           <li>
-            <FaBoxOpen />
-            <span>Inventaris</span>
+            <NavLink to="/inventaris">
+              <FaBoxOpen />
+              <span>Inventaris</span>
+            </NavLink>
           </li>
 
           <li>
-            <FaCog />
-            <span>Pengaturan</span>
+            <NavLink to="/pengaturan">
+              <FaCog />
+              <span>Pengaturan</span>
+            </NavLink>
           </li>
-
         </ul>
-
       </div>
 
-      <button className="new-sale">
-        <FaPlus />
-        Penjualan Baru
-      </button>
-
+      
     </div>
   );
 }

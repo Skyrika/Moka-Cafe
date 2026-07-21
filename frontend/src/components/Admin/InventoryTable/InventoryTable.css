@@ -1,0 +1,36 @@
+.inventory-table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.inventory-table th{
+    background:#5A3D23;
+    color:white;
+    padding:15px;
+}
+
+.inventory-table td{
+    padding:15px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
+
+.inventory-table button{
+    margin:0 5px;
+    padding:6px 12px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.inventory-table button:first-child{
+    background:#ffc107;
+}
+
+.inventory-table button:last-child{
+    background:#dc3545;
+    color:white;
+}
