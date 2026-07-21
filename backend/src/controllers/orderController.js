@@ -1,4 +1,4 @@
-import { query } from '../config/database.js';
+import { query, getClient } from '../config/database.js';
 
 export const createOrder = async (req, res) => {
   const { items, totalAmount, paidAmount } = req.body;
@@ -11,9 +11,33 @@ export const createOrder = async (req, res) => {
   }
 
   const change = Math.max(0, paidAmount - totalAmount);
+  const client = await getClient();
 
   try {
-    const result = await query(
+    // BEGIN transaction
+    await client.query('BEGIN');
+
+    // Validasi stok untuk setiap item dengan FOR UPDATE (cegah race condition)
+    for (const item of items) {
+      const productResult = await client.query(
+        'SELECT id, name, stock FROM products WHERE id = $1 FOR UPDATE',
+        [item.id]
+      );
+
+      if (productResult.rows.length === 0) {
+        throw new Error(`Produk dengan ID ${item.id} tidak ditemukan`);
+      }
+
+      const product = productResult.rows[0];
+      if (product.stock < item.quantity) {
+        throw new Error(
+          `Stok produk tidak mencukupi untuk ${product.name}. Stok tersedia: ${product.stock}, diminta: ${item.quantity}`
+        );
+      }
+    }
+
+    // Insert order
+    const orderResult = await client.query(
       `INSERT INTO orders
       (items, total_amount, paid_amount, change_amount)
       VALUES ($1, $2, $3, $4)
@@ -26,23 +50,55 @@ export const createOrder = async (req, res) => {
       ]
     );
 
+    // Kurangi stok untuk setiap item
+    for (const item of items) {
+      const updateResult = await client.query(
+        'UPDATE products SET stock = stock - $1 WHERE id = $2 AND stock >= $1',
+        [item.quantity, item.id]
+      );
+
+      if (updateResult.rowCount === 0) {
+        throw new Error(`Gagal memperbarui stok untuk produk ID ${item.id}`);
+      }
+    }
+
+    // COMMIT transaction
+    await client.query('COMMIT');
+
     res.status(201).json({
       success: true,
       message: 'Pesanan berhasil dibuat',
       data: {
-        orderId: `ORD-${result.rows[0].id}`,
-        items: result.rows[0].items,
-        totalAmount: result.rows[0].total_amount,
-        paidAmount: result.rows[0].paid_amount,
-        change: result.rows[0].change_amount,
-        createdAt: result.rows[0].created_at,
+        orderId: `ORD-${orderResult.rows[0].id}`,
+        items: orderResult.rows[0].items,
+        totalAmount: orderResult.rows[0].total_amount,
+        paidAmount: orderResult.rows[0].paid_amount,
+        change: orderResult.rows[0].change_amount,
+        createdAt: orderResult.rows[0].created_at,
       },
     });
   } catch (error) {
+    // ROLLBACK transaction jika ada error
+    try {
+      await client.query('ROLLBACK');
+    } catch (rollbackError) {
+      console.error('Gagal rollback:', rollbackError.message);
+    }
+
+    // Cek apakah error terkait stok
+    if (error.message.includes('Stok produk tidak mencukupi')) {
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: error.message,
     });
+  } finally {
+    client.release();
   }
 };
 

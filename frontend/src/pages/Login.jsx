@@ -11,8 +11,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   // Penjelasan: State ini menyimpan status password yang ditampilkan atau disembunyikan.
   const [showPassword, setShowPassword] = useState(false);
-  // Penjelasan: State ini mengatur pilihan remember me pada form login.
-  // const [remember, setRemember] = useState(true);
   // Penjelasan: State ini mengontrol tampilan loading saat proses login berjalan.
   const [loading, setLoading] = useState(false);
   // Penjelasan: State ini menyimpan pesan error atau sukses yang akan ditampilkan.
@@ -58,7 +56,11 @@ const Login = () => {
       } else {
         setMessage({ type: "error", text: data.message || "Username atau password salah." });
       }
-    } catch (error) {
+    } catch (err) {
+      // log the error and show a friendly message
+      /* eslint-disable no-console */
+      console.error(err);
+      /* eslint-enable no-console */
       setMessage({ type: "error", text: "Tidak dapat terhubung ke server backend." });
     } finally {
       setLoading(false);
