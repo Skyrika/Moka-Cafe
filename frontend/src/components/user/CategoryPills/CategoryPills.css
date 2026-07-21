@@ -1,0 +1,39 @@
+.category-container {
+  padding: 16px 24px;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  border-bottom: 1px solid #e0dacf;
+  background-color: #fffdfa;
+  flex-shrink: 0;
+}
+
+.category-container::-webkit-scrollbar {
+  display: none;
+}
+
+.category-pill {
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  background-color: #eae3d9;
+  color: #4b3621;
+}
+
+.category-pill:hover {
+  background-color: #dfd5c6;
+}
+
+.category-pill.active {
+  background-color: #4b3621;
+  color: #f5f5dc;
+  font-weight: 600;
+}
+
+.category-pill:active {
+  transform: scale(0.96);
+}

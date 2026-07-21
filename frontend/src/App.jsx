@@ -1,7 +1,11 @@
-import Penjualan from "./pages/Admin/Penjualan/Penjualan";
+import Beli from './pages/User/Pembelian/Beli';
 
 function App() {
-  return <Penjualan />;
+  return (
+    <div>
+      <Beli />
+    </div>
+  );
 }
 
 export default App;
