@@ -6,34 +6,35 @@ import { FaSpinner } from "react-icons/fa";
 import "./Login.css";
 
 const Login = () => {
-  // Penjelasan: State ini menyimpan input email atau username yang diketik pengguna.
+  // State untuk menyimpan input username/email dari pengguna.
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
-  // Penjelasan: State ini menyimpan status password yang ditampilkan atau disembunyikan.
+  // State untuk mengontrol visibilitas password (ditampilkan/disembunyikan).
   const [showPassword, setShowPassword] = useState(false);
-  // Penjelasan: State ini mengontrol tampilan loading saat proses login berjalan.
+  // State untuk menampilkan indikator loading saat proses login berlangsung.
   const [loading, setLoading] = useState(false);
-  // Penjelasan: State ini menyimpan pesan error atau sukses yang akan ditampilkan.
+  // State untuk menyimpan pesan error atau sukses yang akan ditampilkan ke pengguna.
   const [message, setMessage] = useState(null); // { type: 'error'|'success', text }
 
-  // Penjelasan: Mengambil fungsi login dan data user dari context autentikasi.
+  // Mengambil fungsi login dan data user dari context autentikasi.
   const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Penjelasan: Menjalankan proses saat komponen dirender atau ketika data user berubah.
+  // Mengarahkan pengguna yang sudah login (admin) ke halaman admin.
   useEffect(() => {
     if (user && user.role === "admin") {
       navigate("/admin");
     }
   }, [user, navigate]);
 
-  // Penjelasan: Fungsi ini bertugas memproses login saat form dikirim.
+  // Mengirim data login ke backend saat form dikirim.
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(null);
     setLoading(true);
 
     try {
+      // Mengirim request POST ke endpoint login dengan username dan password.
       const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -42,6 +43,7 @@ const Login = () => {
 
       const data = await response.json();
 
+      // Jika login berhasil, simpan data user ke context dan redirect sesuai role.
       if (response.ok && data.success) {
         login({
           username: data.user?.username || identifier,
@@ -68,9 +70,11 @@ const Login = () => {
   };
 
   // Penjelasan: Menampilkan struktur halaman login yang modern dan responsif.
+  // Menampilkan halaman login dengan form dan ilustrasi.
   return (
     <div className="login-page">
       <div className="login-container">
+        {/* Bagian ilustrasi branding Moka Cafe */}
         <aside className="illustration" aria-hidden>
           <div className="illustration-card">
             <svg
@@ -116,6 +120,7 @@ const Login = () => {
           </div>
         </aside>
 
+        {/* Form login utama */}
         <main className="form-card" role="main">
           <div className="form-inner">
             <div className="brand">
@@ -151,6 +156,7 @@ const Login = () => {
               </div>
             </div>
 
+            {/* Menampilkan pesan error atau sukses */}
             {message && (
               <div
                 className={`alert ${message.type === "error" ? "error" : "success"}`}
@@ -165,7 +171,7 @@ const Login = () => {
               className="login-form"
               aria-label="login form"
             >
-              {/* Penjelasan: Input ini menerima username atau email pengguna untuk proses login. */}
+              {/* Input untuk username atau email */}
               <label htmlFor="identifier" className="sr-only">
                 Email atau Username
               </label>
@@ -185,7 +191,7 @@ const Login = () => {
                 />
               </div>
 
-              {/* Penjelasan: Input ini menerima password pengguna untuk divalidasi. */}
+              {/* Input password dengan tombol show/hide */}
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
@@ -215,20 +221,7 @@ const Login = () => {
                 </button>
               </div>
 
-              {/* <div className="options">
-                <label className="remember">
-                  <input
-                    type="checkbox"
-                    checked={remember}
-                    onChange={(e) => setRemember(e.target.checked)}
-                    aria-checked={remember}
-                  />
-                  Remember me
-                </label>
-                <a href="#" className="forgot">Forgot password?</a>
-              </div> */}
-
-              {/* Penjelasan: Tombol ini mengirim form login dan menampilkan loading saat proses berjalan. */}
+              {/* Tombol submit login dengan indikator loading */}
               <button className="btn-login" type="submit" disabled={loading}>
                 {loading ? <FaSpinner className="spinner" /> : null}
                 <span className="btn-text">

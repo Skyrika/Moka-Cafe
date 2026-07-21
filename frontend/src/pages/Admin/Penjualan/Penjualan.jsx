@@ -6,19 +6,21 @@ import SearchBar from "../../../components/Admin/SearchBar/SearchBar";
 import CategoryFilter from "../../../components/Admin/CategoryFilter/CategoryFilter";
 import ProductGrid from "../../../components/Admin/ProductGrid/ProductGrid";
 
-// Penjelasan: Komponen utama halaman admin yang menampilkan area penjualan.
+// Halaman penjualan untuk admin — menampilkan katalog produk dengan pencarian dan filter.
 function Penjualan() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Semua Item");
 
+  // Mengambil data produk dari backend saat komponen dirender.
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch("/api/products");
         const result = await response.json();
         if (result.success) {
+          // Memformat data produk dari backend ke state.
           setProducts(
             result.data.map((item) => ({
               id: item.id,
@@ -39,11 +41,13 @@ function Penjualan() {
     fetchProducts();
   }, []);
 
+  // Mengekstrak daftar kategori unik dari produk untuk filter.
   const categories = useMemo(() => {
     const categorySet = new Set(products.map((product) => product.category || "Umum"));
     return ["Semua Item", ...Array.from(categorySet)];
   }, [products]);
 
+  // Memfilter produk berdasarkan pencarian dan kategori yang dipilih.
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());

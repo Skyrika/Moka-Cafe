@@ -3,7 +3,8 @@ import { getSettings, updateSettings } from '../controllers/settingsController.j
 
 const router = express.Router();
 
-router.get('/settings', getSettings);
-router.put('/settings', updateSettings);
+// Menghubungkan endpoint API pengaturan dengan fungsi di controller.
+router.get('/settings', getSettings);    // GET /api/settings — mengambil pengaturan
+router.put('/settings', updateSettings); // PUT /api/settings — memperbarui pengaturan
 
 export default router;

@@ -1,5 +1,6 @@
 import "./InventoryTable.css";
 
+// Komponen tabel untuk menampilkan daftar produk inventaris dengan tombol aksi.
 function InventoryTable({ menus, hapusMenu, editMenu }) {
   return (
     <table className="inventory-table">

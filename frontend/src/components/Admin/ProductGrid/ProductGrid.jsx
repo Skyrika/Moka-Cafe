@@ -1,6 +1,7 @@
 import "./ProductGrid.css";
 import ProductCard from "../ProductCard/ProductCard";
 
+// Komponen untuk menampilkan grid kartu produk yang sudah difilter.
 function ProductGrid({ products = [] }) {
   return (
     <div className="product-grid">
