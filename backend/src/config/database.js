@@ -10,7 +10,7 @@ const pool = new Pool({
   port: Number(process.env.DB_PORT || 5432),
   database: process.env.DB_NAME || 'moka_cafe',
   user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || '123',
+  password: process.env.DB_PASSWORD || 'faros1234',
   ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
 });
 
@@ -25,4 +25,5 @@ export const connectDB = async () => {
 };
 
 export const query = (text, params) => pool.query(text, params);
+export const getClient = () => pool.connect();
 export const closeDB = () => pool.end();
