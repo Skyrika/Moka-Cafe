@@ -1,21 +1,18 @@
 import "./CategoryFilter.css";
 
-function CategoryFilter() {
+function CategoryFilter({ categories = [], selectedCategory, onCategoryChange }) {
   return (
     <div className="category-filter">
-
-      <button className="active">
-        Semua Item
-      </button>
-
-      <button>Kopi</button>
-
-      <button>Teh</button>
-
-      <button>Kue</button>
-
-      <button>Breakfast</button>
-
+      {categories.map((category) => (
+        <button
+          key={category}
+          type="button"
+          className={category === selectedCategory ? "active" : ""}
+          onClick={() => onCategoryChange(category)}
+        >
+          {category}
+        </button>
+      ))}
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import React from "react";
 import "./ProductCard.css";
 
-export default function ProductCard({ title, price, image, isPopular }) {
+export default function ProductCard({ title, price, image, isPopular, onClick }) {
   return (
-    <button className="product-card">
+    <button type="button" className="product-card" onClick={onClick}>
       <div className="product-image-box">
         <img className="product-image" src={image} alt={title} />
         {isPopular && <div className="badge-popular">Populer</div>}

@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 
-export default function Header() {
+export default function Header({ searchValue, onSearch }) {
   const navigate = useNavigate();
 
   const handleMenuClick = () => {
@@ -26,6 +26,8 @@ export default function Header() {
           className="header-search-input"
           placeholder="Cari item..."
           type="text"
+          value={searchValue}
+          onChange={(event) => onSearch(event.target.value)}
         />
       </div>
     </header>

@@ -5,10 +5,18 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "db:start": "docker compose up -d postgres",
+    "db:stop": "docker compose down",
+    "db:logs": "docker compose logs -f postgres"
+    ,
+    "db:init": "node src/scripts/createDatabase.js"
   },
   "dependencies": {
-    "express": "^4.21.2"
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.2",
+    "express": "^4.21.2",
+    "pg": "^8.12.4"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

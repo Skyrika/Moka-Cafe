@@ -10,6 +10,7 @@ function InventoryModal({
   const [kategori, setKategori] = useState("");
   const [harga, setHarga] = useState("");
   const [stok, setStok] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     if (menuEdit) {
@@ -17,11 +18,13 @@ function InventoryModal({
       setKategori(menuEdit.kategori);
       setHarga(menuEdit.harga);
       setStok(menuEdit.stok);
+      setImageUrl(menuEdit.imageUrl || "");
     } else {
       setNama("");
       setKategori("");
       setHarga("");
       setStok("");
+      setImageUrl("");
     }
   }, [menuEdit]);
 
@@ -36,6 +39,7 @@ function InventoryModal({
       kategori,
       harga,
       stok,
+      imageUrl,
     });
   };
 
@@ -59,6 +63,13 @@ function InventoryModal({
           placeholder="Kategori"
           value={kategori}
           onChange={(e) => setKategori(e.target.value)}
+        />
+
+        <input
+          type="text"
+          placeholder="URL Gambar (opsional)"
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
         />
 
         <input
