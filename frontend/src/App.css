@@ -1,0 +1,108 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.hero {
+  background: linear-gradient(135deg, #fff7eb 0%, #f3e0c7 100%);
+  border: 1px solid #e3c8a1;
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 20px 45px rgba(78, 42, 20, 0.12);
+}
+
+.eyebrow {
+  display: inline-block;
+  margin: 0 0 0.75rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: #7a4b2d;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.1;
+  color: #4a2c1a;
+}
+
+.lead {
+  max-width: 650px;
+  margin: 0;
+  font-size: 1.05rem;
+  color: #6f4f3d;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.2rem;
+  border-radius: 999px;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(78, 42, 20, 0.15);
+}
+
+.btn.primary {
+  background: #7a4b2d;
+  color: #fff;
+}
+
+.btn.secondary {
+  background: #fff;
+  color: #7a4b2d;
+  border: 1px solid #d9b68a;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.cards article {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid #ebd8bb;
+  border-radius: 18px;
+  padding: 1.25rem;
+  box-shadow: 0 12px 30px rgba(78, 42, 20, 0.08);
+}
+
+.cards h2 {
+  margin: 0 0 0.6rem;
+  color: #4a2c1a;
+}
+
+.cards p {
+  margin: 0;
+  color: #6f4f3d;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 2rem 1.2rem;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
