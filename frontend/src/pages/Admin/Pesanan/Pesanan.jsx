@@ -2,83 +2,22 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../../components/Admin/Sidebar/Sidebar";
 import "./Pesanan.css";
 
-const statusMap = {
-  pending: { label: "Tertunda", className: "status-pending" },
-  diproses: { label: "Diproses", className: "status-processing" },
-  processing: { label: "Diproses", className: "status-processing" },
-  ready: { label: "Siap", className: "status-ready" },
-  siap: { label: "Siap", className: "status-ready" },
-  completed: { label: "Selesai", className: "status-completed" },
-  selesai: { label: "Selesai", className: "status-completed" },
-  canceled: { label: "Dibatalkan", className: "status-canceled" },
-  dibatalkan: { label: "Dibatalkan", className: "status-canceled" },
-};
-
-const dateOptions = [
-  { value: "all", label: "Semua" },
-  { value: "today", label: "Hari Ini" },
-  { value: "yesterday", label: "Kemarin" },
-  { value: "last7", label: "7 Hari Terakhir" },
-  { value: "last30", label: "30 Hari Terakhir" },
-];
-
-const statusOptions = [
-  { value: "all", label: "Semua Status" },
-  { value: "pending", label: "Tertunda" },
-  { value: "processing", label: "Diproses" },
-  { value: "ready", label: "Siap" },
-  { value: "completed", label: "Selesai" },
-  { value: "canceled", label: "Dibatalkan" },
-];
-
-const formatCurrency = (value) => {
-  if (typeof value !== "number") return "Rp 0";
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  })
-    .format(value)
-    .replace("Rp", "Rp ");
-};
-
-const parseTimeToMinutes = (time = "") => {
-  const [hour, minute] = time.split(":").map(Number);
-  if (Number.isNaN(hour) || Number.isNaN(minute)) return 0;
-  return hour * 60 + minute;
-};
-
-const normalizeOrderDate = (order) => {
-  return order.date || order.orderDate || order.createdAt || null;
-};
-
-const getDaysDifference = (dateValue) => {
-  const date = new Date(dateValue);
-  if (Number.isNaN(date.getTime())) return null;
-
-  const today = new Date();
-  const midnightToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  const midnightOrder = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const diffMs = midnightToday.getTime() - midnightOrder.getTime();
-  return Math.round(diffMs / (1000 * 60 * 60 * 24));
-};
-
-function StatusBadge({ status }) {
-  const normalized = String(status || "").toLowerCase();
-  const statusInfo = statusMap[normalized] || { label: status || "-", className: "status-default" };
-  return <span className={`status-badge ${statusInfo.className}`}>{statusInfo.label}</span>;
-}
-
+// Halaman untuk menampilkan riwayat pesanan (admin).
 function Pesanan() {
+  // State untuk menyimpan daftar pesanan dari database.
   const [orders, setOrders] = useState([]);
+  // State untuk indikator loading saat mengambil data.
   const [loading, setLoading] = useState(true);
 
+  // Mengambil riwayat pesanan dari backend saat komponen pertama kali dirender.
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        // Mengirim request GET ke endpoint orders.
         const response = await fetch("/api/orders");
         const result = await response.json();
         if (result.success) {
+          // Memperbarui state dengan data pesanan dari response.
           setOrders(result.data);
         }
       } catch (error) {
@@ -91,6 +30,7 @@ function Pesanan() {
     fetchOrders();
   }, []);
 
+  // Menampilkan daftar kartu pesanan atau pesan jika kosong.
   return (
     <div className="admin-page-shell">
       <Sidebar />
@@ -106,10 +46,12 @@ function Pesanan() {
         {loading ? (
           <p>Memuat riwayat pesanan...</p>
         ) : orders.length === 0 ? (
+          // Tampilan ketika belum ada pesanan.
           <div className="empty-state">
             <p>Belum ada pesanan tercatat.</p>
           </div>
         ) : (
+          // Menampilkan daftar kartu pesanan dari database.
           <div className="order-history-list">
             {orders.map((order) => (
               <div key={order.orderId} className="order-card">

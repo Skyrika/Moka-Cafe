@@ -1,5 +1,6 @@
 import "./SearchBar.css";
 
+// Komponen input pencarian untuk menyaring produk berdasarkan kata kunci.
 function SearchBar({ value, onSearch }) {
   return (
     <div className="search-bar">

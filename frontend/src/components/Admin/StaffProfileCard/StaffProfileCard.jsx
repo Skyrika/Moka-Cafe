@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./StaffProfileCard.css";
 
+// Kartu profil staf — menampilkan daftar staf dan form tambah staf baru.
 export default function StaffProfileCard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [nama, setNama] = useState("");
@@ -21,7 +22,7 @@ export default function StaffProfileCard() {
 
   return (
     <section className="card card-span-8">
-      {/* Header Card */}
+      {/* Header dengan judul dan tombol tambah staf */}
       <div className="card-header">
         <h3 className="card-title">
           <span className="material-symbols-outlined card-icon">group</span>
@@ -33,9 +34,8 @@ export default function StaffProfileCard() {
         </button>
       </div>
 
-      {/* Staff List */}
+      {/* Daftar staf yang ditampilkan */}
       <div className="staff-list">
-        {/* Staff Item 1 */}
         <div className="staff-item">
           <div className="staff-info">
             <img
@@ -53,7 +53,6 @@ export default function StaffProfileCard() {
           </button>
         </div>
 
-        {/* Staff Item 2 */}
         <div className="staff-item">
           <div className="staff-info">
             <div className="staff-avatar-placeholder">MJ</div>
@@ -68,7 +67,7 @@ export default function StaffProfileCard() {
         </div>
       </div>
 
-      {/* Pop-up Modal Tambah Staf */}
+      {/* Modal untuk menambah staf baru */}
       {isModalOpen && (
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>

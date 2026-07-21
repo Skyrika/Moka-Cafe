@@ -1,6 +1,6 @@
-import React from "react";
 import "./CategoryPills.css";
 
+// Komponen filter kategori dalam bentuk tombol-tombol (pills) untuk halaman user.
 export default function CategoryPills({ categories = [], activeCategory, onCategoryChange }) {
   return (
     <div className="category-container">

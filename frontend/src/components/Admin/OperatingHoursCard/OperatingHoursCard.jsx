@@ -1,10 +1,9 @@
-import React from "react";
 import "./OperatingHoursCard.css";
 
+// Kartu pengaturan jam operasional kafe.
 export default function OperatingHoursCard() {
   return (
     <section className="card card-span-4">
-      {/* Header Card */}
       <div className="card-header">
         <h3 className="card-title">
           <span className="material-symbols-outlined card-icon">schedule</span>
@@ -12,7 +11,7 @@ export default function OperatingHoursCard() {
         </h3>
       </div>
 
-      {/* Form Body */}
+      {/* Form untuk mengatur jam buka/tutup setiap hari */}
       <form className="hours-form" onSubmit={(e) => e.preventDefault()}>
         <div className="hours-row">
           <span className="hours-day">Sen - Jum</span>

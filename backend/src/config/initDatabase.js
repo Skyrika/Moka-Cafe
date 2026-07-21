@@ -1,3 +1,4 @@
+// Mengimpor modul untuk membaca file dan path.
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -6,6 +7,7 @@ import { query } from './database.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const initSqlPath = path.resolve(__dirname, '../../sql/init.sql');
 
+// Membaca dan mengeksekusi file init.sql untuk membuat skema dan data awal.
 export const initDatabase = async () => {
   try {
     const sql = await fs.readFile(initSqlPath, 'utf8');

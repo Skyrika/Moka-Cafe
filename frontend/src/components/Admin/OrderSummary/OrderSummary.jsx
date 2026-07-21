@@ -1,9 +1,12 @@
+// Komponen untuk menampilkan ringkasan pesanan (subtotal, pajak, total) dan tombol bayar.
 function Summary({ cart }) {
+  // Menghitung subtotal dari semua item di keranjang.
   const subtotal = cart.reduce(
     (total, item) => total + item.price * item.qty,
     0
   );
 
+  // Menghitung pajak 11% dari subtotal.
   const tax = subtotal * 0.11;
   const total = subtotal + tax;
 

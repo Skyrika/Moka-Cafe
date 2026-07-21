@@ -1,8 +1,8 @@
-import React from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 
+// Header halaman pembelian — menampilkan brand dan search bar.
 export default function Header({ searchValue, onSearch }) {
   const navigate = useNavigate();
 

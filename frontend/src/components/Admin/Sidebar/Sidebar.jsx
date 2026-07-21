@@ -7,6 +7,7 @@ import {
   FaCog,
 } from "react-icons/fa";
 
+// Sidebar navigasi untuk halaman admin — menampilkan menu navigasi utama.
 function Sidebar() {
   return (
     <div className="sidebar">

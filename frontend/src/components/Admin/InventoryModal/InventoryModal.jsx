@@ -1,17 +1,20 @@
 import "./InventoryModal.css";
 import { useState, useEffect } from "react";
 
+// Modal untuk menambah atau mengedit produk inventaris.
 function InventoryModal({
   closeModal,
   tambahMenu,
   menuEdit,
 }) {
+  // State untuk menyimpan input form.
   const [nama, setNama] = useState("");
   const [kategori, setKategori] = useState("");
   const [harga, setHarga] = useState("");
   const [stok, setStok] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
+  // Mengisi form dengan data produk saat mode edit.
   useEffect(() => {
     if (menuEdit) {
       setNama(menuEdit.nama);
@@ -28,6 +31,7 @@ function InventoryModal({
     }
   }, [menuEdit]);
 
+  // Memvalidasi data dan mengirim ke fungsi tambahMenu dari parent.
   const simpanData = () => {
     if (!nama || !kategori || !harga || !stok) {
       alert("Semua data harus diisi!");

@@ -1,3 +1,4 @@
+// Data dummy pengguna untuk keperluan pengujian login.
 export const dummyUsers = [
   {
     id: 1,

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import "./TaxConfigCard.css";
 
+// Kartu konfigurasi pajak — mengambil, menampilkan, dan menyimpan pengaturan pajak.
 export default function TaxConfigCard() {
   const [taxInclusive, setTaxInclusive] = useState(false);
   const [taxRate, setTaxRate] = useState(11);
@@ -8,9 +9,11 @@ export default function TaxConfigCard() {
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState("");
 
+  // Mengambil pengaturan pajak dari backend saat komponen dirender.
   useEffect(() => {
     const fetchSettings = async () => {
       try {
+        // Mengirim request GET ke endpoint settings.
         const response = await fetch("/api/settings");
         const result = await response.json();
 
@@ -28,11 +31,13 @@ export default function TaxConfigCard() {
     fetchSettings();
   }, []);
 
+  // Menyimpan pengaturan pajak ke backend.
   const handleSave = async () => {
     setSaving(true);
     setStatus("");
 
     try {
+      // Mengirim request PUT dengan data pajak yang baru.
       const response = await fetch("/api/settings", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -55,7 +60,6 @@ export default function TaxConfigCard() {
 
   return (
     <section className="card card-span-12">
-      {/* Header Card */}
       <div className="card-header">
         <h3 className="card-title">
           <span className="material-symbols-outlined card-icon">account_balance</span>
@@ -63,12 +67,12 @@ export default function TaxConfigCard() {
         </h3>
       </div>
 
-      {/* Card Body */}
       <div className="card-body">
         {loading ? (
           <p>Memuat pengaturan pajak...</p>
         ) : (
           <>
+            {/* Input persentase pajak */}
             <div className="tax-input-group">
               <label className="tax-input-label">Pajak Penjualan Default (%)</label>
               <div className="tax-input-wrapper">
@@ -84,6 +88,7 @@ export default function TaxConfigCard() {
               </div>
             </div>
 
+            {/* Toggle apakah harga sudah termasuk pajak */}
             <div className="tax-toggle-row">
               <div className="tax-toggle-info">
                 <p className="tax-setting-label">Harga Termasuk Pajak</p>
@@ -99,6 +104,7 @@ export default function TaxConfigCard() {
               </label>
             </div>
 
+            {/* Tombol simpan dan status */}
             <div className="tax-save-row">
               <button
                 type="button"

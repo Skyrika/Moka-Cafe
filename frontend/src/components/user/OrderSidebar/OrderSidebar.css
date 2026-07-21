@@ -179,10 +179,25 @@
   transition: background 0.2s ease;
 }
 
-.pay-now-btn:hover {
+.pay-now-btn:hover:not(:disabled) {
   background-color: #382818;
 }
 
-.pay-now-btn:active {
+.pay-now-btn:active:not(:disabled) {
   transform: scale(0.98);
+}
+
+.pay-now-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.checkout-error {
+  background-color: #fce4e4;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
 }

@@ -1,3 +1,4 @@
+// Model untuk merepresentasikan data pesanan yang berasal dari database.
 export class Order {
   constructor({ id, items, totalAmount, paidAmount, change }) {
     this.id = id;

@@ -1,6 +1,6 @@
-import React from "react";
 import "./ProductCard.css";
 
+// Kartu produk untuk halaman user — menampilkan gambar, nama, harga, dan badge populer.
 export default function ProductCard({ title, price, image, isPopular, onClick }) {
   return (
     <button type="button" className="product-card" onClick={onClick}>

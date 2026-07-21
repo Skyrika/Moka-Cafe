@@ -3,9 +3,10 @@ import { getProducts, createProduct, updateProduct, deleteProduct } from '../con
 
 const router = express.Router();
 
-router.get('/products', getProducts);
-router.post('/products', createProduct);
-router.put('/products/:id', updateProduct);
-router.delete('/products/:id', deleteProduct);
+// Menghubungkan endpoint API produk dengan fungsi di controller.
+router.get('/products', getProducts);       // GET /api/products — mengambil semua produk
+router.post('/products', createProduct);     // POST /api/products — menambah produk baru
+router.put('/products/:id', updateProduct);  // PUT /api/products/:id — memperbarui produk
+router.delete('/products/:id', deleteProduct); // DELETE /api/products/:id — menghapus produk
 
 export default router;

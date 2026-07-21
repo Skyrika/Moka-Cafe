@@ -1,7 +1,7 @@
-import React from "react";
 import { FaQrcode, FaMoneyBillWave, FaCreditCard, FaWallet } from "react-icons/fa";
 import "./PaymentMethods.css";
 
+// Komponen untuk menampilkan pilihan metode pembayaran yang tersedia.
 export default function PaymentMethods() {
   return (
     <div className="payment-grid">

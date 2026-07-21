@@ -1,5 +1,6 @@
 import "./CategoryFilter.css";
 
+// Komponen untuk menampilkan filter kategori produk dalam bentuk tombol-tombol.
 function CategoryFilter({ categories = [], selectedCategory, onCategoryChange }) {
   return (
     <div className="category-filter">
