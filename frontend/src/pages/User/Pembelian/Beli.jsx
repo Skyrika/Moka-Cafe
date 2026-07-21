@@ -1,65 +1,103 @@
-import React from "react";
-// Naik 3 tingkat: Pembelian -> User -> pages -> src, lalu masuk ke components/user/
+import React, { useEffect, useMemo, useState } from "react";
 import Header from "../../../components/user/Header/Header";
 import CategoryPills from "../../../components/user/CategoryPills/CategoryPills";
 import ProductCard from "../../../components/user/ProductCard/ProductCard";
 import OrderSidebar from "../../../components/user/OrderSidebar/OrderSidebar";
 import "./Beli.css";
 
-// Penjelasan: Komponen utama halaman pembelian untuk pengguna.
 export default function Beli() {
-  const products = [
-    {
-      id: 1,
-      title: "Espresso",
-      price: "Rp 35.000",
-      image: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04",
-      isPopular: false,
-    },
-    {
-      id: 2,
-      title: "Signature Latte",
-      price: "Rp 55.000",
-      image: "https://images.unsplash.com/photo-1534778101976-62847782c213",
-      isPopular: true,
-    },
-    {
-      id: 3,
-      title: "Butter Croissant",
-      price: "Rp 40.000",
-      image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a",
-      isPopular: false,
-    },
-    {
-      id: 4,
-      title: "Matcha Latte",
-      price: "Rp 50.000",
-      image: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a",
-      isPopular: false,
-    },
-  ];
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Semua Item");
+  const [orderItems, setOrderItems] = useState([]);
 
-  // Penjelasan: Menampilkan daftar produk dan sidebar pesanan pada halaman pembelian.
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("/api/products");
+        const result = await response.json();
+
+        if (result.success) {
+          const mappedProducts = result.data.map((item) => ({
+            id: item.id,
+            title: item.name,
+            priceValue: item.price,
+            price: `Rp ${item.price.toLocaleString("id-ID")}`,
+            image: item.image_url || "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04",
+            isPopular: item.stock > 20,
+            category: item.category || "Umum",
+          }));
+
+          setProducts(mappedProducts);
+        }
+      } catch (error) {
+        console.error("Gagal mengambil produk:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const categories = useMemo(() => {
+    const categorySet = new Set(products.map((product) => product.category || "Umum"));
+    return ["Semua Item", ...Array.from(categorySet)];
+  }, [products]);
+
+  const filteredProducts = useMemo(
+    () =>
+      products.filter((product) => {
+        const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesCategory = selectedCategory === "Semua Item" || product.category === selectedCategory;
+        return matchesSearch && matchesCategory;
+      }),
+    [products, searchQuery, selectedCategory]
+  );
+
+  const addToOrder = (product) => {
+    setOrderItems((prev) => {
+      const existing = prev.find((item) => item.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prev, { id: product.id, name: product.title, price: product.priceValue, quantity: 1 }];
+    });
+  };
+
   return (
     <div className="beli-layout">
       <main className="beli-main">
         <div className="content-left">
-          <Header />
-          <CategoryPills />
-          <div className="product-grid">
-            {products.map((item) => (
-              <ProductCard
-                key={item.id}
-                title={item.title}
-                price={item.price}
-                image={item.image}
-                isPopular={item.isPopular}
-              />
-            ))}
-          </div>
+          <Header searchValue={searchQuery} onSearch={setSearchQuery} />
+          <CategoryPills
+            categories={categories}
+            activeCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+          />
+
+          {loading ? (
+            <p>Memuat produk...</p>
+          ) : (
+            <div className="product-grid">
+              {filteredProducts.map((item) => (
+                <ProductCard
+                  key={item.id}
+                  title={item.title}
+                  price={item.price}
+                  image={item.image}
+                  isPopular={item.isPopular}
+                  onClick={() => addToOrder(item)}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
-        <OrderSidebar />
+        <OrderSidebar orderItems={orderItems} setOrderItems={setOrderItems} />
       </main>
     </div>
   );

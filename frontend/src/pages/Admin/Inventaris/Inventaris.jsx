@@ -1,5 +1,5 @@
 import "./Inventaris.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Sidebar from "../../../components/Admin/Sidebar/Sidebar";
 import InventoryTable from "../../../components/Admin/InventoryTable/InventoryTable";
@@ -8,67 +8,82 @@ import InventoryModal from "../../../components/Admin/InventoryModal/InventoryMo
 function Inventaris() {
   const [showModal, setShowModal] = useState(false);
   const [menuEdit, setMenuEdit] = useState(null);
+  const [menus, setMenus] = useState([]);
 
-  const [menus, setMenus] = useState([
-    {
-      id: 1,
-      nama: "Espresso",
-      kategori: "Kopi",
-      harga: 18000,
-      stok: 25,
-    },
-    {
-      id: 2,
-      nama: "Latte",
-      kategori: "Kopi",
-      harga: 25000,
-      stok: 15,
-    },
-    {
-      id: 3,
-      nama: "Brownies",
-      kategori: "Kue",
-      harga: 22000,
-      stok: 10,
-    },
-  ]);
+  const fetchMenus = async () => {
+    try {
+      const response = await fetch("/api/products");
+      const result = await response.json();
+      if (result.success) {
+        setMenus(
+          result.data.map((item) => ({
+            id: item.id,
+            nama: item.name,
+            kategori: item.category,
+            harga: item.price,
+            stok: item.stock,
+            imageUrl: item.image_url,
+          }))
+        );
+      }
+    } catch (error) {
+      console.error("Gagal memuat produk", error);
+    }
+  };
 
-  const simpanMenu = (menuBaru) => {
+  useEffect(() => {
+    fetchMenus();
+  }, []);
 
-  if (menuEdit) {
+  const simpanMenu = async (menuBaru) => {
+    try {
+      const payload = {
+        name: menuBaru.nama,
+        category: menuBaru.kategori,
+        price: Number(menuBaru.harga),
+        stock: Number(menuBaru.stok),
+        image_url: menuBaru.imageUrl || null,
+      };
 
-    setMenus(
-      menus.map((menu) =>
-        menu.id === menuEdit.id
-          ? { ...menu, ...menuBaru }
-          : menu
-      )
-    );
+      const method = menuEdit ? "PUT" : "POST";
+      const url = menuEdit
+        ? `/api/products/${menuEdit.id}`
+        : "/api/products";
 
-  } else {
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    setMenus([
-      ...menus,
-      {
-        id: menus.length + 1,
-        ...menuBaru,
-      },
-    ]);
+      if (response.ok) {
+        setShowModal(false);
+        setMenuEdit(null);
+        fetchMenus();
+      }
+    } catch (error) {
+      console.error("Gagal menyimpan produk", error);
+    }
+  };
 
-  }
+  const hapusMenu = async (id) => {
+    try {
+      const response = await fetch(`/api/products/${id}`, {
+        method: "DELETE",
+      });
 
-  setMenuEdit(null);
-  setShowModal(false);
-};
-    
-    const hapusMenu = (id) => {
-  setMenus(menus.filter((menu) => menu.id !== id));
-};
+      if (response.ok) {
+        fetchMenus();
+      }
+    } catch (error) {
+      console.error("Gagal menghapus produk", error);
+    }
+  };
 
-        const editMenu = (menu) => {
-        setMenuEdit(menu);
-        setShowModal(true);
-};
+  const editMenu = (menu) => {
+    setMenuEdit(menu);
+    setShowModal(true);
+  };
 
   return (
     <div className="inventory-container">
@@ -78,37 +93,26 @@ function Inventaris() {
         <div className="inventory-header">
           <h1>Inventaris</h1>
 
-          <button
-            className="add-btn"
-            onClick={() => setShowModal(true)}
-          >
+          <button className="add-btn" onClick={() => setShowModal(true)}>
             + Tambah Menu
           </button>
         </div>
 
-        <input
-          type="text"
-          placeholder="Cari menu..."
-          className="search-menu"
-        />
+        <input type="text" placeholder="Cari menu..." className="search-menu" />
 
-        <InventoryTable
-        menus={menus}
-        hapusMenu={hapusMenu}
-        editMenu={editMenu}
-        />
+        <InventoryTable menus={menus} hapusMenu={hapusMenu} editMenu={editMenu} />
       </div>
 
       {showModal && (
         <InventoryModal
-        closeModal={() => {
+          closeModal={() => {
             setShowModal(false);
             setMenuEdit(null);
-        }}
-        tambahMenu={simpanMenu}
-        menuEdit={menuEdit}
+          }}
+          tambahMenu={simpanMenu}
+          menuEdit={menuEdit}
         />
-)}
+      )}
     </div>
   );
 }

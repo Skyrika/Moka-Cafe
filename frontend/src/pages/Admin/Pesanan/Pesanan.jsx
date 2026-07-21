@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../../../components/Admin/Sidebar/Sidebar";
 import "./Pesanan.css";
 
@@ -71,30 +71,18 @@ function StatusBadge({ status }) {
 
 function Pesanan() {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [query, setQuery] = useState("");
-  const [selectedDate, setSelectedDate] = useState("all");
-  const [selectedStatus, setSelectedStatus] = useState("all");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchOrders = async () => {
-      setLoading(true);
-      setError(null);
-
       try {
         const response = await fetch("/api/orders");
-        if (!response.ok) {
-          throw new Error("Gagal memuat pesanan. Silakan coba lagi.");
+        const result = await response.json();
+        if (result.success) {
+          setOrders(result.data);
         }
-
-        const data = await response.json();
-        const payload = Array.isArray(data) ? data : data.data || [];
-        setOrders(payload);
-      } catch (fetchError) {
-        setError(fetchError.message || "Terjadi kesalahan saat memuat pesanan.");
+      } catch (error) {
+        console.error("Gagal memuat riwayat pesanan:", error);
       } finally {
         setLoading(false);
       }
@@ -103,177 +91,47 @@ function Pesanan() {
     fetchOrders();
   }, []);
 
-  const filteredOrders = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-
-    return orders
-      .filter((order) => {
-        if (selectedStatus !== "all") {
-          const statusValue = String(order.status || "").toLowerCase();
-          if (statusValue !== selectedStatus) return false;
-        }
-
-        if (selectedDate !== "all") {
-          const orderDateValue = normalizeOrderDate(order);
-          const diffDays = getDaysDifference(orderDateValue);
-
-          if (diffDays === null) return true;
-          if (selectedDate === "today" && diffDays !== 0) return false;
-          if (selectedDate === "yesterday" && diffDays !== 1) return false;
-          if (selectedDate === "last7" && (diffDays < 0 || diffDays > 6)) return false;
-          if (selectedDate === "last30" && (diffDays < 0 || diffDays > 29)) return false;
-        }
-
-        if (!normalizedQuery) return true;
-
-        const searchable = [
-          order.orderId,
-          order.customerName,
-          ...(order.items || []).map((item) => item.name),
-        ]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
-
-        return searchable.includes(normalizedQuery);
-      })
-      .sort((a, b) => {
-        const dateA = normalizeOrderDate(a);
-        const dateB = normalizeOrderDate(b);
-        if (dateA && dateB) {
-          const diff = new Date(dateB).getTime() - new Date(dateA).getTime();
-          if (diff !== 0) return diff;
-        }
-        return parseTimeToMinutes(b.time) - parseTimeToMinutes(a.time);
-      });
-  }, [orders, query, selectedDate, selectedStatus]);
-
-  const totalOrders = filteredOrders.length;
-  const lastPage = Math.max(1, Math.ceil(totalOrders / itemsPerPage));
-  const currentOrders = filteredOrders.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-  const startItem = totalOrders === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1;
-  const endItem = Math.min(totalOrders, currentPage * itemsPerPage);
-
   return (
     <div className="admin-page-shell">
       <Sidebar />
 
       <div className="pesanan-container">
-        <div className="pesanan-header-row">
-          <div className="pesanan-title-block">
-            <h1>Pesanan</h1>
-            <p className="pesanan-subtitle">Kelola dan lacak pemenuhan kafe.</p>
-          </div>
-
-          <div className="pesanan-controls">
-            <div className="pesanan-search">
-              <input
-                type="text"
-                value={query}
-                onChange={(event) => {
-                  setQuery(event.target.value);
-                  setCurrentPage(1);
-                }}
-                placeholder="Cari ID Pesanan..."
-              />
-            </div>
-
-            <div className="pesanan-filter-group">
-              <select
-                value={selectedDate}
-                onChange={(event) => {
-                  setSelectedDate(event.target.value);
-                  setCurrentPage(1);
-                }}
-              >
-                {dateOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                value={selectedStatus}
-                onChange={(event) => {
-                  setSelectedStatus(event.target.value);
-                  setCurrentPage(1);
-                }}
-              >
-                {statusOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+        <div className="pesanan-header">
+          <div>
+            <h1>Riwayat Pesanan</h1>
+            <p>Semua transaksi penjualan yang tersimpan.</p>
           </div>
         </div>
 
-        <div className="pesanan-card">
-          <div className="pesanan-card-header">
-            <div className="pesanan-list-title">
-              <h2>Pesanan Terbaru</h2>
-              <p>Urutkan berdasarkan waktu terbaru.</p>
-            </div>
+        {loading ? (
+          <p>Memuat riwayat pesanan...</p>
+        ) : orders.length === 0 ? (
+          <div className="empty-state">
+            <p>Belum ada pesanan tercatat.</p>
           </div>
-
-          {loading ? (
-            <div className="pesanan-state-card">Memuat pesanan...</div>
-          ) : error ? (
-            <div className="pesanan-state-card pesanan-error">{error}</div>
-          ) : currentOrders.length === 0 ? (
-            <div className="pesanan-state-card">
-              <strong>Tidak ada pesanan ditemukan.</strong>
-              <span>Coba ubah kata kunci atau filter untuk melihat lebih banyak hasil.</span>
-            </div>
-          ) : (
-            <div className="pesanan-list">
-              <div className="pesanan-list-head">
-                <span>ID Pesanan</span>
-                <span>Waktu</span>
-                <span>Barang</span>
-                <span>Status</span>
-                <span>Total</span>
-              </div>
-
-              {currentOrders.map((order) => (
-                <div key={order._id || order.orderId} className="pesanan-row">
-                  <div className="pesanan-cell pesanan-cell-id">
-                    <strong>{order.orderId}</strong>
-                    {order.customerName ? <span className="pesanan-customer">{order.customerName}</span> : null}
+        ) : (
+          <div className="order-history-list">
+            {orders.map((order) => (
+              <div key={order.orderId} className="order-card">
+                <div className="order-card-header">
+                  <div>
+                    <h2>{order.orderId}</h2>
+                    <p>{new Date(order.createdAt).toLocaleString("id-ID")}</p>
                   </div>
-                  <div className="pesanan-cell">{order.time}</div>
-                  <div className="pesanan-cell pesanan-items">
-                    {(order.items || []).map((item, index) => (
-                      <span key={`${item.name}-${index}`} className="pesanan-item-line">
-                        {item.qty}x {item.name}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="pesanan-cell">
-                    <StatusBadge status={order.status} />
-                  </div>
-                  <div className="pesanan-cell pesanan-total">{formatCurrency(order.total)}</div>
+                  <div className="order-total">Total: Rp {order.totalAmount.toLocaleString("id-ID")}</div>
                 </div>
-              ))}
-            </div>
-          )}
 
-          <div className="pesanan-pagination-row">
-            <span className="pesanan-pagination-info">
-              Menampilkan {startItem}-{endItem} dari {totalOrders} pesanan
-            </span>
-            <div className="pesanan-pagination-buttons">
-              <button onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))} disabled={currentPage === 1}>
-                Previous
-              </button>
-              <button onClick={() => setCurrentPage((prev) => Math.min(lastPage, prev + 1))} disabled={currentPage === lastPage}>
-                Next
-              </button>
-            </div>
+                <div className="order-card-body">
+                  <ul>
+                    {order.items.map((item, index) => (
+                      <li key={index}>{item.quantity}x {item.name}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

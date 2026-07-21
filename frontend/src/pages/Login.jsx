@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { dummyUsers } from "../data/dummyUsers";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { FaSpinner } from "react-icons/fa";
 import "./Login.css";
@@ -36,45 +35,34 @@ const Login = () => {
     setMessage(null);
     setLoading(true);
 
-    // simulate request latency for UX
-    await new Promise((r) => setTimeout(r, 700));
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: identifier, password }),
+      });
 
-    // Penjelasan: Memeriksa data dummy untuk validasi login sebelum masuk ke aplikasi.
-    const foundUser = dummyUsers.find(
-      (u) =>
-        (u.username === identifier || u.email === identifier) &&
-        u.password === password,
-    );
+      const data = await response.json();
 
-    if (foundUser) {
-      if (foundUser.role !== "admin") {
-        setMessage({
-          type: "error",
-          text: "Hanya Admin yang dapat login.",
+      if (response.ok && data.success) {
+        login({
+          username: data.user?.username || identifier,
+          role: data.user?.role || "user",
         });
 
-        setLoading(false);
-        return;
+        setMessage({ type: "success", text: `Selamat datang, ${data.user?.username || identifier}!` });
+        setTimeout(() => {
+          if (data.user?.role === "admin") navigate("/admin");
+          else navigate("/beli");
+        }, 600);
+      } else {
+        setMessage({ type: "error", text: data.message || "Username atau password salah." });
       }
-
-      login(foundUser);
-
-      setMessage({
-        type: "success",
-        text: `Selamat datang, ${foundUser.username}!`,
-      });
-
-      setTimeout(() => {
-        navigate("/admin");
-      }, 600);
-    } else {
-      setMessage({
-        type: "error",
-        text: "Username atau password salah.",
-      });
+    } catch (error) {
+      setMessage({ type: "error", text: "Tidak dapat terhubung ke server backend." });
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   // Penjelasan: Menampilkan struktur halaman login yang modern dan responsif.
