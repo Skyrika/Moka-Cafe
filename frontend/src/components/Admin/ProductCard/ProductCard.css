@@ -1,0 +1,41 @@
+.product-card{
+    background:white;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.product-card img{
+    width:100%;
+    height:170px;
+    object-fit:cover;
+}
+
+.product-info{
+    padding:15px;
+}
+
+.product-info h3{
+    font-size:18px;
+    color:#4D341E;
+    margin-bottom:8px;
+}
+
+.product-info p{
+    color:#666;
+    margin-bottom:15px;
+}
+
+.product-info button{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:#5A3D23;
+    color:white;
+    cursor:pointer;
+}
+
+.product-info button:hover{
+    background:#402b18;
+}

@@ -1,0 +1,23 @@
+.summary{
+    margin-top:30px;
+    border-top:1px solid #ddd;
+    padding-top:20px;
+}
+
+.summary p{
+    margin:10px 0;
+}
+
+.summary h2{
+    margin:20px 0;
+}
+
+.summary button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#5b3b1f;
+    color:white;
+    margin-top:10px;
+}
