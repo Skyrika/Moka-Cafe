@@ -1,4 +1,3 @@
-// Penjelasan: Mengimpor React Router untuk mengatur perpindahan halaman.
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
@@ -11,16 +10,15 @@ import Beli from "./pages/User/Pembelian/Beli";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
-// Penjelasan: Komponen utama aplikasi yang menyiapkan provider dan routing.
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        {/* Penjelasan: Menentukan rute halaman sesuai URL yang diakses. */}
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Beli />} />
           <Route path="/login" element={<Login />} />
 
+          {/* Admin Routes */}
           <Route
             path="/admin"
             element={
@@ -29,7 +27,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin/inventaris"
             element={
@@ -38,7 +35,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin/pesanan"
             element={
@@ -47,7 +43,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin/pengaturan"
             element={
@@ -57,7 +52,7 @@ function App() {
             }
           />
 
-          {/* User */}
+          {/* User Routes */}
           <Route
             path="/beli"
             element={
@@ -65,7 +60,7 @@ function App() {
                 <Beli />
               </ProtectedRoute>
             }
-          /> 
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

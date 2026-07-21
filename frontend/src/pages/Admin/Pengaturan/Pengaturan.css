@@ -1,0 +1,101 @@
+.admin-page-shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: #faf9f6;
+}
+
+.pengaturan-container {
+  flex: 1;
+  padding: 40px 60px;
+  background-color: #faf9f6;
+  box-sizing: border-box;
+}
+
+.pengaturan-header {
+  margin-bottom: 40px;
+}
+
+.pengaturan-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1c1a;
+  margin: 0 0 8px 0;
+}
+
+.pengaturan-subtitle {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 18px;
+  color: #4e453d;
+  margin: 0;
+}
+
+/* Grid System */
+.pengaturan-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 32px;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(51, 33, 13, 0.05), 0 2px 8px rgba(51, 33, 13, 0.02);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-span-12 { grid-column: span 12; }
+.card-span-8 { grid-column: span 8; }
+.card-span-4 { grid-column: span 4; }
+
+@media (max-width: 1024px) {
+  .card-span-8, .card-span-4 {
+    grid-column: span 12;
+  }
+}
+
+/* Card Common Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e3e2e0;
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1c1a;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-icon {
+  color: #4b3621;
+  font-size: 28px;
+}
+
+/* Input Global Style */
+.moka-input {
+  background-color: #faf9f6;
+  border: 1px solid #80756c;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.moka-input:focus {
+  border-color: #622a00;
+  box-shadow: 0 0 0 1px #622a00;
+}

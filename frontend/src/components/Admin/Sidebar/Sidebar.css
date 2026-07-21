@@ -1,12 +1,13 @@
 .sidebar{
     width:250px;
-    height:100vh;
+    min-height:100vh;
     background:#F7F3EF;
     border-right:1px solid #ddd;
     display:flex;
     flex-direction:column;
     justify-content:space-between;
     padding:25px 18px;
+    box-sizing:border-box;
 }
 
 .logo h1{
@@ -27,22 +28,26 @@
 }
 
 .menu li{
+    margin-bottom:10px;
+}
+
+.menu a{
     display:flex;
     align-items:center;
     gap:15px;
     padding:14px 18px;
-    margin-bottom:10px;
     border-radius:10px;
     cursor:pointer;
     transition:.2s;
     color:#444;
+    text-decoration:none;
 }
 
-.menu li:hover{
+.menu a:hover{
     background:#ece7e2;
 }
 
-.menu li.active{
+.menu a.active{
     background:#ECE7E2;
     color:#5A3D23;
     font-weight:600;

@@ -1,0 +1,18 @@
+.pesanan-container {
+  flex: 1;
+  padding: 40px 60px;
+  background-color: #faf9f6;
+  box-sizing: border-box;
+}
+
+.pesanan-container h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  color: #1a1c1a;
+  margin-bottom: 8px;
+}
+
+.pesanan-container p {
+  font-size: 16px;
+  color: #4e453d;
+}

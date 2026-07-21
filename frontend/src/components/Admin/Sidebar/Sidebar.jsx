@@ -5,7 +5,6 @@ import {
   FaClipboardList,
   FaBoxOpen,
   FaCog,
-  FaPlus,
 } from "react-icons/fa";
 
 function Sidebar() {
@@ -19,36 +18,34 @@ function Sidebar() {
 
         <ul className="menu">
           <li>
-            <NavLink to="/">
+            <NavLink to="/admin" end className={({ isActive }) => (isActive ? "active" : "") }>
               <FaCashRegister />
               <span>Penjualan</span>
             </NavLink>
           </li>
 
           <li>
-            <NavLink to="/pesanan">
+            <NavLink to="/admin/pesanan" className={({ isActive }) => (isActive ? "active" : "") }>
               <FaClipboardList />
               <span>Pesanan</span>
             </NavLink>
           </li>
 
           <li>
-            <NavLink to="/inventaris">
+            <NavLink to="/admin/inventaris" className={({ isActive }) => (isActive ? "active" : "") }>
               <FaBoxOpen />
               <span>Inventaris</span>
             </NavLink>
           </li>
 
           <li>
-            <NavLink to="/pengaturan">
+            <NavLink to="/admin/pengaturan" className={({ isActive }) => (isActive ? "active" : "") }>
               <FaCog />
               <span>Pengaturan</span>
             </NavLink>
           </li>
         </ul>
       </div>
-
-      
     </div>
   );
 }

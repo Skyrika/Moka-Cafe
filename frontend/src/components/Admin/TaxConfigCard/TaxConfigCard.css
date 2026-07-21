@@ -1,0 +1,174 @@
+/* Card Container */
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(51, 33, 13, 0.05), 0 2px 8px rgba(51, 33, 13, 0.02);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-span-12 {
+  grid-column: span 12;
+}
+
+/* Header Section */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e3e2e0;
+}
+
+.card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1c1a;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-icon {
+  color: #4b3621;
+  font-size: 24px;
+}
+
+/* Card Body */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Input Group Styling */
+.tax-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start; /* Mengunci agar label dan input di rata kiri */
+}
+
+.tax-input-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1c1a;
+}
+
+.tax-input-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 240px; /* Ukuran input dibuat compact & pas */
+}
+
+.tax-input {
+  width: 100%;
+  background-color: #faf9f6;
+  border: 1px solid #d2c4ba;
+  border-radius: 8px;
+  padding: 10px 36px 10px 14px; /* Padding kanan disisakan untuk simbol % */
+  font-size: 15px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: #1a1c1a;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.tax-input:focus {
+  border-color: #4b3621;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(75, 54, 33, 0.1);
+}
+
+.tax-unit-suffix {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #80756c;
+  font-size: 14px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+/* Toggle Switch Row */
+.tax-toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.tax-toggle-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tax-setting-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1c1a;
+  margin: 0;
+}
+
+.tax-setting-desc {
+  font-size: 13px;
+  color: #6b635b;
+  margin: 0;
+}
+
+/* Custom Toggle Switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0;
+  background-color: #e3e2e0;
+  transition: 0.2s ease;
+  border-radius: 34px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #ffffff;
+  transition: 0.2s ease;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: #4b3621;
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(22px);
+}

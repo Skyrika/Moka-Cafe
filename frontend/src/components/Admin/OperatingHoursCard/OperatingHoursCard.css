@@ -1,0 +1,132 @@
+/* Card Container */
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 16px 18px; /* Padding kartu diperkecil agar ruang dalam lebih lega */
+  box-shadow: 0 4px 20px rgba(51, 33, 13, 0.05), 0 2px 8px rgba(51, 33, 13, 0.02);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-span-4 {
+  grid-column: span 4;
+}
+
+/* Header Section */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #e3e2e0;
+}
+
+.card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1c1a;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-icon {
+  color: #4b3621;
+  font-size: 22px;
+}
+
+/* Form Structure */
+.hours-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hours-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 0;
+}
+
+.hours-day {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px; /* Ukuran teks hari sedikit diperkecil */
+  color: #1a1c1a;
+  white-space: nowrap;
+}
+
+/* Time Inputs Group */
+.hours-inputs {
+  display: flex;
+  align-items: center;
+  gap: 2px; /* Jarak antar elemen dipersempit */
+}
+
+/* Input Jam dibuat sangat ringkas & presisi */
+.input-time {
+  width: 78px !important; /* Diperkecil menjadi 78px */
+  padding: 4px 2px !important; /* Padding dalam dibuat minimalis */
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px !important; /* Font diperkecil agar pas dengan ikon jam browser */
+  font-weight: 500;
+  color: #1a1c1a;
+  background-color: #faf9f6;
+  border: 1px solid #d2c4ba;
+  border-radius: 6px;
+  text-align: center;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-time:focus {
+  border-color: #4b3621;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(75, 54, 33, 0.1);
+}
+
+.time-separator {
+  color: #80756c;
+  font-size: 11px;
+  padding: 0 2px;
+}
+
+/* Closed State */
+.hours-row.closed {
+  opacity: 0.7;
+}
+
+.closed-badge {
+  font-size: 12px;
+  font-style: italic;
+  color: #80756c;
+  background-color: #f0eee9;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+/* Outline Button */
+.btn-outline {
+  width: 100%;
+  margin-top: 8px;
+  padding: 9px;
+  border: 1.5px solid #4b3621;
+  background: transparent;
+  color: #4b3621;
+  border-radius: 8px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+  background-color: #4b3621;
+  color: #ffffff;
+}

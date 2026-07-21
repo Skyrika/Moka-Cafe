@@ -14,15 +14,15 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-shrink: 0; /* Mencegah judul tertekan/mengecil */
+  flex-shrink: 0;
 }
 
 .header-brand {
-  font-size: 26px; /* Ukuran disesuaikan agar pas 1 baris */
+  font-size: 26px;
   color: #4b3621;
   font-weight: 700;
   margin: 0;
-  white-space: nowrap; /* Mencegah tulisan terpotong/turun baris */
+  white-space: nowrap;
   line-height: 1;
 }
 
@@ -40,10 +40,25 @@
   line-height: 1;
 }
 
+/* Efek Klik pada Tulisan Menu */
+.header-subtitle.clickable {
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.1s ease;
+}
+
+.header-subtitle.clickable:hover {
+  color: #735941;
+  text-decoration: underline;
+}
+
+.header-subtitle.clickable:active {
+  transform: scale(0.96);
+}
+
 .header-search-box {
   position: relative;
   width: 100%;
-  max-width: 380px; /* Membatasi panjang pencarian agar tidak menabrak judul */
+  max-width: 380px;
 }
 
 .header-search-icon {
