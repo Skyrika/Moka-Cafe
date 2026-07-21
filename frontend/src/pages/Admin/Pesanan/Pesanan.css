@@ -1,3 +1,9 @@
+.admin-page-shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: #faf9f6;
+}
+
 .pesanan-container {
   flex: 1;
   padding: 40px 60px;
@@ -15,12 +21,14 @@
 
 .pesanan-container h1 {
   font-family: 'Playfair Display', serif;
-  font-size: 32px;
+  font-size: 38px;
   color: #1a1c1a;
-  margin-bottom: 8px;
+  margin: 0 0 10px 0;
 }
 
-.pesanan-container p {
+.pesanan-subtitle {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 16px;
   color: #4e453d;
 }

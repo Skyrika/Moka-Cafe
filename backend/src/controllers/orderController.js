@@ -4,15 +4,26 @@ export const createOrder = async (req, res) => {
   const { items, totalAmount, paidAmount } = req.body;
 
   if (!items || !Array.isArray(items) || items.length === 0) {
-    return res.status(400).json({ success: false, message: 'Daftar pesanan wajib ada' });
+    return res.status(400).json({
+      success: false,
+      message: 'Daftar pesanan wajib ada',
+    });
   }
 
   const change = Math.max(0, paidAmount - totalAmount);
 
   try {
     const result = await query(
-      'INSERT INTO orders (items, total_amount, paid_amount, change_amount) VALUES ($1, $2, $3, $4) RETURNING id, items, total_amount, paid_amount, change_amount, created_at',
-      [JSON.stringify(items), totalAmount, paidAmount, change]
+      `INSERT INTO orders
+      (items, total_amount, paid_amount, change_amount)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id, items, total_amount, paid_amount, change_amount, created_at`,
+      [
+        JSON.stringify(items),
+        totalAmount,
+        paidAmount,
+        change,
+      ]
     );
 
     res.status(201).json({
@@ -28,14 +39,25 @@ export const createOrder = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
 export const getOrders = async (_req, res) => {
   try {
     const result = await query(
-      'SELECT id, items, total_amount, paid_amount, change_amount, created_at FROM orders ORDER BY created_at DESC'
+      `SELECT
+        id,
+        items,
+        total_amount,
+        paid_amount,
+        change_amount,
+        created_at
+      FROM orders
+      ORDER BY created_at DESC`
     );
 
     res.json({
@@ -50,6 +72,9 @@ export const getOrders = async (_req, res) => {
       })),
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
