@@ -6,7 +6,9 @@ import { AuthContext } from "../../context/AuthContext";
 // 1) In route element: <Route path="/admin" element={<ProtectedRoute><AdminPage/></ProtectedRoute>} />
 // 2) With role prop: <ProtectedRoute requiredRole="admin">...</ProtectedRoute>
 
+// Penjelasan: Komponen ini memastikan halaman hanya bisa diakses saat pengguna sesuai role.
 const ProtectedRoute = ({ children, requiredRole = "admin" }) => {
+  // Penjelasan: Mengambil status login dan role pengguna dari context.
   const { isAuthenticated, user } = useContext(AuthContext);
 
   if (!isAuthenticated) {
