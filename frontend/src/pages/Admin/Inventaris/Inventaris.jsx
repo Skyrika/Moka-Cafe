@@ -17,6 +17,7 @@ function Inventaris() {
       // Mengirim request GET ke endpoint produk.
       const response = await fetch("/api/products");
       const result = await response.json();
+
       if (result.success) {
         // Memformat data dari backend ke struktur yang digunakan frontend.
         setMenus(
@@ -26,7 +27,9 @@ function Inventaris() {
             kategori: item.category,
             harga: item.price,
             stok: item.stock,
-            imageUrl: item.image_url,
+            imageUrl: item.image_url
+              ? `http://localhost:5050${item.image_url}`
+              : "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=400&q=80",
           }))
         );
       }
@@ -43,14 +46,16 @@ function Inventaris() {
   // Menyimpan produk baru atau memperbarui produk yang sudah ada.
   const simpanMenu = async (menuBaru) => {
     try {
-      // Memformat data sesuai format yang diharapkan backend.
-      const payload = {
-        name: menuBaru.nama,
-        category: menuBaru.kategori,
-        price: Number(menuBaru.harga),
-        stock: Number(menuBaru.stok),
-        image_url: menuBaru.imageUrl || null,
-      };
+      const formData = new FormData();
+
+      formData.append("name", menuBaru.nama);
+      formData.append("category", menuBaru.kategori);
+      formData.append("price", Number(menuBaru.harga));
+      formData.append("stock", Number(menuBaru.stok));
+
+      if (menuBaru.imageFile) {
+        formData.append("image", menuBaru.imageFile);
+      }
 
       // Menentukan method dan URL berdasarkan mode (tambah atau edit).
       const method = menuEdit ? "PUT" : "POST";
@@ -61,15 +66,17 @@ function Inventaris() {
       // Mengirim request ke backend.
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: formData,
       });
 
-      if (response.ok) {
-        // Menutup modal dan memperbarui daftar produk.
+      const result = await response.json();
+
+      if (result.success) {
         setShowModal(false);
         setMenuEdit(null);
         fetchMenus();
+      } else {
+        alert(result.message);
       }
     } catch (error) {
       console.error("Gagal menyimpan produk", error);
@@ -107,14 +114,28 @@ function Inventaris() {
         <div className="inventory-header">
           <h1>Inventaris</h1>
 
-          <button className="add-btn" onClick={() => setShowModal(true)}>
+          <button
+            className="add-btn"
+            onClick={() => {
+              setMenuEdit(null);
+              setShowModal(true);
+            }}
+          >
             + Tambah Menu
           </button>
         </div>
 
-        <input type="text" placeholder="Cari menu..." className="search-menu" />
+        <input
+          type="text"
+          placeholder="Cari menu..."
+          className="search-menu"
+        />
 
-        <InventoryTable menus={menus} hapusMenu={hapusMenu} editMenu={editMenu} />
+        <InventoryTable
+          menus={menus}
+          hapusMenu={hapusMenu}
+          editMenu={editMenu}
+        />
       </div>
 
       {showModal && (

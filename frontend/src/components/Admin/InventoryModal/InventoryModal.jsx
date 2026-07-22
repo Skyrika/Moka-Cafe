@@ -12,7 +12,7 @@ function InventoryModal({
   const [kategori, setKategori] = useState("");
   const [harga, setHarga] = useState("");
   const [stok, setStok] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   // Mengisi form dengan data produk saat mode edit.
   useEffect(() => {
@@ -21,17 +21,35 @@ function InventoryModal({
       setKategori(menuEdit.kategori);
       setHarga(menuEdit.harga);
       setStok(menuEdit.stok);
-      setImageUrl(menuEdit.imageUrl || "");
     } else {
       setNama("");
       setKategori("");
       setHarga("");
       setStok("");
-      setImageUrl("");
     }
+
+    setImageFile(null);
   }, [menuEdit]);
 
-  // Memvalidasi data dan mengirim ke fungsi tambahMenu dari parent.
+  // Menangani pemilihan file gambar.
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) {
+      setImageFile(null);
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      alert("File harus berupa gambar.");
+      e.target.value = "";
+      return;
+    }
+
+    setImageFile(file);
+  };
+
+  // Memvalidasi data dan mengirim ke parent.
   const simpanData = () => {
     if (!nama || !kategori || !harga || !stok) {
       alert("Semua data harus diisi!");
@@ -41,19 +59,16 @@ function InventoryModal({
     tambahMenu({
       nama,
       kategori,
-      harga,
-      stok,
-      imageUrl,
+      harga: Number(harga),
+      stok: Number(stok),
+      imageFile,
     });
   };
 
   return (
     <div className="modal-overlay">
       <div className="modal">
-
-        <h2>
-          {menuEdit ? "Edit Menu" : "Tambah Menu"}
-        </h2>
+        <h2>{menuEdit ? "Edit Menu" : "Tambah Menu"}</h2>
 
         <input
           type="text"
@@ -70,11 +85,14 @@ function InventoryModal({
         />
 
         <input
-          type="text"
-          placeholder="URL Gambar (opsional)"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
         />
+
+        {imageFile && (
+          <small>File: {imageFile.name}</small>
+        )}
 
         <input
           type="number"
@@ -91,7 +109,6 @@ function InventoryModal({
         />
 
         <div className="modal-button">
-
           <button
             className="cancel-btn"
             onClick={closeModal}
@@ -105,7 +122,6 @@ function InventoryModal({
           >
             {menuEdit ? "Update" : "Simpan"}
           </button>
-
         </div>
       </div>
     </div>
